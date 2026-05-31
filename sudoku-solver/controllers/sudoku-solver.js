@@ -2,7 +2,7 @@ class SudokuSolver {
 
   validate(puzzleString) {
     if (typeof puzzleString !== 'string') {
-      return { valid: false, error: 'Required field missing' };
+      return { valid: false, error: 'Required field(s) missing' };
     }
     if (/[^1-9.]/.test(puzzleString)) {
       return { valid: false, error: 'Invalid characters in puzzle' };

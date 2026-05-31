@@ -10,7 +10,7 @@ module.exports = function (app) {
       const { puzzle, coordinate, value } = req.body;
 
       if (!puzzle || !coordinate || !value) {
-        return res.json({ error: 'Required field missing' });
+        return res.json({ error: 'Required field(s) missing' });
       }
 
       const validation = solver.validate(puzzle);
@@ -45,7 +45,7 @@ module.exports = function (app) {
       const { puzzle } = req.body;
 
       if (!puzzle) {
-        return res.json({ error: 'Required field missing' });
+        return res.json({ error: 'Required field(s) missing' });
       }
 
       const validation = solver.validate(puzzle);

@@ -24,7 +24,7 @@ suite('Functional Tests', () => {
       .post('/api/solve')
       .send({})
       .end((err, res) => {
-        assert.deepEqual(res.body, { error: 'Required field missing' });
+        assert.deepEqual(res.body, { error: 'Required field(s) missing' });
         done();
       });
   });
@@ -104,7 +104,7 @@ suite('Functional Tests', () => {
       .post('/api/check')
       .send({ puzzle, coordinate: 'A2' })
       .end((err, res) => {
-        assert.deepEqual(res.body, { error: 'Required field missing' });
+        assert.deepEqual(res.body, { error: 'Required field(s) missing' });
         done();
       });
   });
