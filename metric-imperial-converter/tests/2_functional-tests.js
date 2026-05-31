@@ -26,7 +26,7 @@ suite('Functional Tests', function() {
       .get('/api/convert')
       .query({ input: '32g' })
       .end(function(err, res) {
-        assert.strictEqual(res.text, '"invalid unit"');
+        assert.strictEqual(res.text, 'invalid unit');
         done();
       });
   });
@@ -36,7 +36,7 @@ suite('Functional Tests', function() {
       .get('/api/convert')
       .query({ input: '3/7.2/4kg' })
       .end(function(err, res) {
-        assert.strictEqual(res.text, '"invalid number"');
+        assert.strictEqual(res.text, 'invalid number');
         done();
       });
   });
@@ -46,7 +46,7 @@ suite('Functional Tests', function() {
       .get('/api/convert')
       .query({ input: '3/7.2/4kilomegagram' })
       .end(function(err, res) {
-        assert.strictEqual(res.text, '"invalid number and unit"');
+        assert.strictEqual(res.text, 'invalid number and unit');
         done();
       });
   });
