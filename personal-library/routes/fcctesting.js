@@ -50,19 +50,23 @@ module.exports = function (app) {
       });
     });
 
-  app.get('/_api/get-tests', cors(), function(req, res, next){
+  app.get('/_api/get-tests', cors(), function(req, res){
     console.log('requested');
-    if(process.env.NODE_ENV === 'test') return next();
-    res.json({status: 'unavailable'});
-  },
-  function(req, res, next){
-    if(!runner.report) return next();
-    res.json(testFilter(runner.report, req.query.type, req.query.n));
-  },
-  function(req, res){
-    runner.on('done', function(report){
-      process.nextTick(() =>  res.json(testFilter(runner.report, req.query.type, req.query.n)));
+    function send(report) {
+      res.json(testFilter(report || runner.report || [], req.query.type, req.query.n));
+    }
+    if (runner.report) {
+      return send(runner.report);
+    }
+    runner.once('done', function(report){
+      process.nextTick(() => send(report));
     });
+    try {
+      runner.run();
+    } catch (e) {
+      console.error(e);
+      res.json([]);
+    }
   });
   app.get('/_api/app-info', function(req, res) {
     let hs = Object.keys(res._headers)
