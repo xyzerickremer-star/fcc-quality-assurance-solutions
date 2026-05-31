@@ -3,16 +3,7 @@
   "rewrites": [{ "source": "/(.*)", "destination": "/api/index.js" }],
   "functions": {
     "api/index.js": {
-      "includeFiles": [
-        "tests/**",
-        "views/**",
-        "public/**",
-        "components/**",
-        "controllers/**",
-        "routes/**",
-        "assertion-analyser.js",
-        "test-runner.js"
-      ]
+      "includeFiles": "**/*"
     }
   }
 }
