@@ -5,7 +5,7 @@ const expect      = require('chai').expect;
 const cors        = require('cors');
 
 const fccTestingRoutes  = require('./routes/fcctesting.js');
-const runner            = require('./test-runner');
+// test-runner is required lazily only for local NODE_ENV=test runs.
 const userRoutes        = require('./routes/api.js');
 
 const app = express();
@@ -37,20 +37,28 @@ app.use(function(req, res, next) {
 
 const portNum = process.env.PORT || 3000;
 
-// Start our server and tests!
-app.listen(portNum, () => {
-  console.log(`Listening on port ${portNum}`);
-  if (process.env.NODE_ENV==='test') {
-    console.log('Running Tests...');
-    setTimeout(function () {
-      try {
-        runner.run();
-      } catch (error) {
-        console.log('Tests are not valid:');
-        console.error(error);
-      }
-    }, 1500);
-  }
-});
+// Start our server and tests locally only. Vercel imports and uses the exported app.
+function startServer() {
+  const portNum = process.env.PORT || 3000;
+  const listener = app.listen(portNum, function () {
+    const actualPort = listener.address() && listener.address().port ? listener.address().port : portNum;
+    console.log('Listening on port ' + actualPort);
+    if (process.env.NODE_ENV === 'test') {
+      console.log('Running Tests...');
+      setTimeout(function () {
+        try {
+          require('./test-runner').run();
+        } catch (e) {
+          console.log('Tests are not valid:');
+          console.error(e);
+        }
+      }, 1500);
+    }
+  });
+}
+
+if (require.main === module) {
+  startServer();
+}
 
 module.exports = app; // For testing
